@@ -39,10 +39,9 @@ def offer_a_transversal(m,n):
             else:
                 row += "O"
         transversal += row + '\n'
-    path = os.path.join(ta.get_temp_dir(), "output.txt")
-    with open(path, "w") as f:
-        print(transversal, file=f)    
-        ta.evallib.evaluation.send_file(path, filename=f"transversal_{num_offered_transversals}.txt")
+
+    
+    ta.send_file(transversal, filename=f"tiling_{num_offered_transversals}.txt")
 
         
 num_offered_packings = 0
@@ -82,11 +81,8 @@ def offer_a_packing(m,n):
     #
     #  da progettare anche la forma della rappresentazione più opportuna del packing in memoria per facilitare la traduzione visuale. Per l'idea astratta del packing si può avvalersi invece della soluzione del problema nella cartella solutions (in futuro, con l'esperienza in classe, capiremo se non sia opportuno oscurarla offrendo packing meno regolari e più caotici. Anche per questo è bene separare le varie fasi che portano a renderizzare l'idea del packing (l'oggetto combinatorico), entro un file di ASCIIART).
 """
-    
-    path = os.path.join(ta.get_temp_dir(), "output.txt")
-    with open(path, "w") as f:
-        print(packing, file=f)    
-        ta.evallib.evaluation.send_file(path, filename=f"packing_{num_offered_packings}.txt")
+
+    ta.send_file(packing, filename=f"tiling_{num_offered_packings}.txt")
 
 
 
