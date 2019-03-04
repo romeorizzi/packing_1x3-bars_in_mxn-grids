@@ -98,17 +98,18 @@ def test_case(m,n,Sr, Sc):
         ta.goals["tell_min_huge"] = False
 
 
-    cert_NO_transv_given = False
-    cert_NO_transv_ok = True
+    cert_NOTtransv_given = False
+    cert_NOTtransv_ok = None
     def exhibit_untouched_tile(row,col,dir):
-            nonlocal cert_NO_transv_given
-            nonlocal cert_NO_transv_ok
+            nonlocal cert_NOTtransv_given
+            nonlocal cert_NOTtransv_ok
             nonlocal Sr
             nonlocal Sc
-            cert_NO_transv_given = True
+            cert_NOTtransv_given = True
+            cert_NOTtransv_ok = True
             if row < 1 or col < 1 or row > m or col > n:
                 print(f"La tessera che proponi di inserire nel transversal fuoriesce dalla scacchiera nella cella ({row},{col}).")
-                cert_NO_transv_ok = False
+                cert_NOTtransv_ok = False
                 return
             if dir == H:
                 cells = [ [row,col], [row,col+1], [row,col+2] ]
@@ -116,7 +117,8 @@ def test_case(m,n,Sr, Sc):
                 cells = [ [row,col], [row+1,col], [row+2,col] ]
             for cell in cells:
                 if cell in zip(Sr, Sc):
-                    cert_NO_transv_ok = False
+                    print(f"La tessera che proponi come certificato che S non è un transversal è invece colpita da S nella cella ({row},{col}).")
+                    cert_NOTtransv_ok = False
 
 
     print(f"case (m={m}, n={n}, Sr={Sr}, Sc={Sc})")
@@ -127,6 +129,8 @@ def test_case(m,n,Sr, Sc):
 
 ######## TRANSVERSAL RECOGNITION EVALUATION   ########
         
+    cert_NOTtransv_given = False
+    cert_NOTtransv_ok = None
     with ta.run_algorithm(ta.submission.source) as p:
         try:
             with p.section(time_limit=0.1):
@@ -135,19 +139,19 @@ def test_case(m,n,Sr, Sc):
             print(f"During the execution of your is_transversal({m},{n},{len(Sr)},{Sr},{Sc}) function we got the following exception:")
             print(e)
             ta.goals["is_transversal"] = False
-            ta.goals["cert_NO_transv"] = False
+            ta.goals["cert_NOTtransv"] = False
         else:
             print(f"From your is_transversal({m},{n},{len(Sr)},{Sr},{Sc}) function we expected {expected_is}, got {returned_is}")
             if returned_is == expected_is:
                 print("OK. The two values coincide.")
                 if returned_is:
-                    if not cert_NO_transv_given or not cert_NO_transv_ok:
-                        ta.goals["cert_NO_transv"] = False
+                    if (not cert_NOTtransv_given) or (not cert_NOTtransv_ok):
+                        ta.goals["cert_NOTtransv"] = False
                         print("However, we require you to also exhibit a possible placement of one tile avoiding the cells of S. This is convenient certificate that S is not a transveral. Please tell us where to put this tile.")
             else:
                 print("NO. The two values differ. You should revise your is_transversal function.")
                 ta.goals["is_transversal"] = False
-                ta.goals["cert_NO_transv"] = False
+                ta.goals["cert_NOTtransv"] = False
 
 ######## MIN CARD OF A TRANSVERSAL EVALUATION   ########
 

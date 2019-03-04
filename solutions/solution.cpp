@@ -1,34 +1,38 @@
 static const int H = 0;
 static const int V = 1;
 
-int is_transversal(int m, int n, int lenS, int *Sr, int *S, void exhibit_untouched_tile(int row, int col, int dir)) {
+int is_transversal(int m, int n, int lenS, int *Sr, int *Sc, void exhibit_untouched_tile(int row, int col, int dir)) {
   int S[101][101];
   for(int i = 1; i <= m; i++)
     for(int j = 1; j <= n; j++)
       S[i][j] = 0;
   for(int i = 0; i < lenS; i++) {
-     S[Sr[i]-1][Sc[i]-1] = 1;
+     S[Sr[i]][Sc[i]] = 1;
   }
 
-  for(int i = 1; i <= m; i++)
+  for(int i = 1; i <= m; i++)  // search for a violating horizontal tile
     for(int j = 1; j+2 <= n; j++) {
       int intersects = 0; 
-      for(int k = 0; k<3; k++)
+      for(int k = 0; k<3; k++) {
         if(S[i][j+k])
 	  intersects++;
-      if(intersects==0)
+      }
+      if(intersects==0) {
 	exhibit_untouched_tile(i,j,H);
 	return 0;
+      }
     }  
-  for(int i = 1; i+2 <= m; i++)
-    for(int j = 1; j <= n; j++) {
+  for(int j = 1; j <= n; j++) // search for a violating vertical tile
+    for(int i = 1; i+2 <= m; i++) {
       int intersects = 0; 
-      for(int k = 0; k<3; k++)
+      for(int k = 0; k<3; k++) {
         if(S[i+k][j])
 	  intersects++;
-      if(intersects==0)
+      }
+      if(intersects==0) {
 	exhibit_untouched_tile(i,j,V);
 	return 0;
+      }
     }  
   return 1;
 }
@@ -59,6 +63,7 @@ void produce_max_packing(int m, int n, void place_tile(int row, int col, int dir
       for(int j = 1; j+2 <= n; j += 3)
         place_tile(i,j,H);
     return;
+  }  
   if((m%3 == 0) || (n <= 2)) {
     for(int j = 1; j <= n; j++)
       for(int i = 1; i+2 <= m; i += 3)

@@ -4,24 +4,24 @@ H = 0   # horizontal placement of a tile
 V = 1   # vertical placement of a tile
 
 def is_transversal(m, n, lenS, Sr, Sc, exhibit_untouched_tile):
-    S = [ [0 for _ in range(n+1)] for _ in range(m+1)]
+    S = [ [False for _ in range(n+1)] for _ in range(m+1)]
     for i in range(lenS):
-       S[Sr[i]][Sc[i]] = 1
+       S[Sr[i]][Sc[i]] = True
 
-    for i in range(1,m+1):
+    for i in range(1,m+1): # search for a violating horizontal tile
         for j in range(1,n-1):
             intersects = 0 
             for k in range(3):
-                if S[i][j+k] == 1:
+                if S[i][j+k]:
                     intersects += 1
             if intersects==0:
                 exhibit_untouched_tile(i,j,H)
                 return 0
-    for i in range(1,m-1):
-        for j in range(1,n+1):
+    for j in range(1,n+1): # search for a violating vertical tile
+        for i in range(1,m-1):
             intersects = 0 
             for k in range(3):
-                if S[i+k][j] == 1:
+                if S[i+k][j]:
                     intersects += 1
             if intersects==0:
                 exhibit_untouched_tile(i,j,V)
